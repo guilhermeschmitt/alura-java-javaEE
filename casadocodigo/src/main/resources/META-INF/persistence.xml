@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+    http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="casadocodigo-dev"
+		transaction-type="JTA">
+		<description>Dev persistence unit</description>
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<!-- O JTA, basicamente ele cuida de cada transação que é feita no sistema, 
+			por isso não temos que se preocupar tanto em abrir uma transação, realizar 
+			a operaçao e commitar, tudo isso é feito pelo JTA facilitando muito a nossa 
+			vida. O JNDI, basicamente é uma forma de informar ao servidor onde fica o 
+			caminho dos serviços que iremos utilizar, nesse caso informamos onde vai 
+			ficar a configuração dele. -->
+		<jta-data-source>java:jboss/datasources/casadocodigoDS</jta-data-source>
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		<properties>
+			<property name="hibernate.cache.use_query_cache" value="true" />
+			<property name="hibernate.cache.infinispan.entity.expiration.lifespan"
+				value="900000" />
+			<property name="hibernate.cache.infinispan.entity.expiration.max_idle"
+				value="300000" /> <!-- Essa parte do infinispan só serve pro Wildfly, com Tomcat provavelmente 
+									é diferente -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+		</properties>
+	</persistence-unit>
+</persistence>
